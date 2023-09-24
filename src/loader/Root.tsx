@@ -6,40 +6,14 @@ import Logo_BDT from '../svgs/bdt/Logo';
 
 const RotatorAnimation = keyframes`
     0% {
-        transform: rotateY(0deg);
+        transform: rotate(0deg);
         scale:1;
     }
-    0% {
-        transform: rotateY(180deg);
-        scale:0.9;
-    }
     100% {
-        transform: rotateY(360deg);
+        transform: rotate(360deg);
         scale: 1;
     }
 `;
-
-const T = styled(Typography)({
-    fontFamily: "Megrim",
-    fontSize: "9rem",
-    animation: `${RotatorAnimation} 3000ms ease-in-out infinite`,
-});
-
-export const RootLoaderBD = () => (
-    <Box sx={{
-        height: "100vh",
-        width: "100vw",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        bgcolor: "background.default",
-        color: "text.primary",
-    }}>
-        <T>
-            BD
-        </T>
-    </Box>
-);
 
 export const TN = styled(Typography)({
     fontFamily: "Poppins",
@@ -68,21 +42,19 @@ export default function NewRootLoader() {
                 BoxProps={{
                     sx: {
                         borderRadius: "50%",
-                        boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+                        boxShadow: theme => `0px 4px 4px 0px ${theme.palette.divider}`,
                         height: "220px",
                         width: "220px",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
+                        animation: `${RotatorAnimation} 2000ms ease-in-out`,
                         alignSelf: "center"
                     }
                 }}
                 svgProps={{
                     height: "200",
-                    width: "200",
-                    sx: {
-                        animation: `${RotatorAnimation} 2000ms ease-in-out`
-                    }
+                    width: "200"
                 }}
             />
         </Box>

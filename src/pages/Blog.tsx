@@ -99,133 +99,151 @@ function Blog() {
             />
 
             <Container
-                sx={{ pl: { md: "75px" } }} >
-                <Stack gap={1} my={1} >
+                sx={{
+                    overflowY: "scroll",
+                    height: "100vh",
+                    width: {
+                        xs: "100%",
+                        md: "calc(100vw - 70px)"
+                    },
+                    display: "flex",
+                    flex: 1,
+                    "&::-webkit-scrollbar": {
+                        display: "none"
+                    }
+                }}
+            >
+                <Box
+                    sx={{
+                        py: "75px",
+                        height: "max-content",
+                    }}
+                >
+                    <Stack direction="column" gap={1} mb="50px" >
 
-                    <Box sx={{ height: "50vh", width: "100%", overflow: "hidden", borderRadius: "18px", mx: "auto", }} >
-                        <img
-                            src={data.blog?.cover ?? ""}
-                            alt={data.blog?.title ?? ""}
-                            style={{
-                                width: "100%",
-                                height: "100%",
-                                objectFit: "cover",
-                                objectPosition: "center",
-                                minWidth: "600px",
-                                minHeight: "600px"
-                            }}
-                        />
-                    </Box>
+                        <Box sx={{ height: "50vh", width: "100%", overflow: "hidden", borderRadius: "18px", mx: "auto", }} >
+                            <img
+                                src={data.blog?.cover ?? ""}
+                                alt={data.blog?.title ?? ""}
+                                style={{
+                                    width: "100%",
+                                    height: "100%",
+                                    objectFit: "cover",
+                                    objectPosition: "center",
+                                    minWidth: "600px",
+                                    minHeight: "600px"
+                                }}
+                            />
+                        </Box>
 
-                    {/* header stack for title summary and other info */}
-                    <Stack gap={2} sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }} >
+                        {/* header stack for title summary and other info */}
+                        <Stack gap={2} sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }} >
 
-                        <Typography variant="overline" color="text.secondary" >
-                            {new Date(data.blog?.createdAt).toDateString()}
-                        </Typography>
-                        <Typography variant="h4" maxWidth={{ xs: "95%", md: "70%" }} textAlign="center" fontWeight="bold" >
-                            {data.blog?.title}
-                        </Typography>
+                            <Typography variant="overline" color="text.secondary" >
+                                {new Date(data.blog?.createdAt).toDateString()}
+                            </Typography>
+                            <Typography variant="h4" maxWidth={{ xs: "95%", md: "70%" }} textAlign="center" fontWeight="bold" >
+                                {data.blog?.title}
+                            </Typography>
 
-                        <Typography variant="body1" color="text.secondary" >
-                            {data.blog?.description}
-                        </Typography>
+                            <Typography variant="body1" color="text.secondary" >
+                                {data.blog?.description}
+                            </Typography>
 
-                    </Stack>
-                    {/*  */}
+                        </Stack>
+                        {/*  */}
 
-                    {/* author stack */}
-                    {/*  */}
+                        {/* author stack */}
+                        {/*  */}
 
-                    {/* sections stack */}
-                    <Stack gap={2} mt={3} sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }} >
+                        {/* sections stack */}
+                        <Stack gap={2} mt={3} sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }} >
 
-                        {
-                            data.blog?.sections?.edges?.map((section, index) => (
-                                <Stack gap={1} mt={1.5} key={section?.node?.id} >
-                                    {
-                                        section?.node?.cover && (
-                                            <Box
-                                                sx={{
-                                                    width: "90%",
-                                                    height: "30vh",
-                                                    borderRadius: "18px",
-                                                    overflow: "hidden"
-                                                }}
-                                            >
-                                                <img
-                                                    src={section.node.cover}
-                                                    style={{
-                                                        width: "100%",
-                                                        height: "100%",
-                                                        objectFit: "cover"
+                            {
+                                data.blog?.sections?.edges?.map((section, index) => (
+                                    <Stack gap={1} mt={1.5} key={section?.node?.id} >
+                                        {
+                                            section?.node?.cover && (
+                                                <Box
+                                                    sx={{
+                                                        width: "90%",
+                                                        height: "30vh",
+                                                        borderRadius: "18px",
+                                                        overflow: "hidden"
                                                     }}
-                                                />
-                                            </Box>
-                                        )
-                                    }
-                                    {
-                                        section?.node?.video && (
-                                            <Box
-                                                sx={{
-                                                    width: "90%",
-                                                    height: "30vh",
-                                                    borderRadius: "18px",
-                                                    overflow: "hidden"
-                                                }}
-                                            >
-                                                <video
-                                                    src={section.node.video}
-                                                    style={{
-                                                        width: "100%",
-                                                        height: "100%",
-                                                        objectFit: "cover"
+                                                >
+                                                    <img
+                                                        src={section.node.cover}
+                                                        style={{
+                                                            width: "100%",
+                                                            height: "100%",
+                                                            objectFit: "cover"
+                                                        }}
+                                                    />
+                                                </Box>
+                                            )
+                                        }
+                                        {
+                                            section?.node?.video && (
+                                                <Box
+                                                    sx={{
+                                                        width: "90%",
+                                                        height: "30vh",
+                                                        borderRadius: "18px",
+                                                        overflow: "hidden"
                                                     }}
-                                                />
-                                            </Box>
-                                        )
-                                    }
-                                    <Typography variant="h5" fontWeight="bold" >
-                                        {section?.node?.title}
-                                    </Typography>
-                                    <Typography variant="body1"  >
-                                        {section?.node?.content.split("\n").map((line: string) => (
-                                            <>
-                                                {line}
-                                                <br />
-                                            </>
-                                        ))}
-                                    </Typography>
-                                </Stack>
-                            ))
-                        }
-
-                    </Stack>
-                    {/*  */}
-
-                    {/* references */}
-                    <Stack gap={1} mt="2em" sx={{ display: Object.keys(references).length > 0 ? "flex" : "none" }}>
-
-                        <Typography variant='subtitle1' fontWeight="bold" fontStyle="oblique" >
-                            References :
-                        </Typography>
-
-                        {Object.keys(references).map(
-                            (key) => {
-                                return (
-                                    <Typography variant="caption" component="a" color="text.primary" href={references[key]} key={key}>
-                                        {key}
-                                    </Typography>
-                                )
+                                                >
+                                                    <video
+                                                        src={section.node.video}
+                                                        style={{
+                                                            width: "100%",
+                                                            height: "100%",
+                                                            objectFit: "cover"
+                                                        }}
+                                                    />
+                                                </Box>
+                                            )
+                                        }
+                                        <Typography variant="h5" fontWeight="bold" >
+                                            {section?.node?.title}
+                                        </Typography>
+                                        <Typography variant="body1"  >
+                                            {section?.node?.content.split("\n").map((line: string) => (
+                                                <>
+                                                    {line}
+                                                    <br />
+                                                </>
+                                            ))}
+                                        </Typography>
+                                    </Stack>
+                                ))
                             }
-                        )}
-                    </Stack>
-                    {/*  */}
 
+                        </Stack>
+                        {/*  */}
 
-                </Stack >
+                        {/* references */}
+                        <Stack gap={1} mt="2em" sx={{ display: Object.keys(references).length > 0 ? "flex" : "none" }}>
+
+                            <Typography variant='subtitle1' fontWeight="bold" fontStyle="oblique" >
+                                References :
+                            </Typography>
+
+                            {Object.keys(references).map(
+                                (key) => {
+                                    return (
+                                        <Typography variant="caption" component="a" color="text.primary" href={references[key]} key={key}>
+                                            {key}
+                                        </Typography>
+                                    )
+                                }
+                            )}
+                        </Stack>
+                        {/*  */}
+                    </Stack >
+
+                </Box>
             </Container>
-
         </>
     );
 

@@ -5,7 +5,7 @@ import { Box, Container, Skeleton } from '@mui/material';
 import { RelayEnvironmentProvider } from 'react-relay';
 
 // relay config
-import { devEnv } from './relay/environment';
+import prodEnv from './relay/environment';
 
 // pages components
 import ThemeWrapper from './theme/Wrapper';
@@ -21,16 +21,13 @@ import RootErrorPage from './ErrorPages/RootError';
 
 // pages
 import Root from './pages/Root';
-import Profile from './pages/Profile';
+// import Profile from './pages/Profile';
 import MyProfile from './pages/MyProfile';
-import Blogs from './pages/Blogs';
 import Blog from './pages/Blog';
-import CreateBlog from './pages/Create';
-import EditBlog from './pages/Edit';
 
 // root app layout
 import Layout from './Layout';
-import NewRootLoader, { RootLoaderBD } from './loader/Root';
+import NewRootLoader from './loader/Root';
 
 
 const LoadingScreen = () => {
@@ -78,14 +75,14 @@ const router = createBrowserRouter([
                             </React.Suspense>
                         ),
                     },
-                    {
-                        path: "/profile/:id",
-                        element: (
-                            <React.Suspense fallback={<LoadingScreen />} >
-                                <Profile />
-                            </React.Suspense>
-                        ),
-                    },
+                    // {
+                    //     path: "/profile/:id",
+                    //     element: (
+                    //         <React.Suspense fallback={<LoadingScreen />} >
+                    //             <Profile />
+                    //         </React.Suspense>
+                    //     ),
+                    // },
                 ]
             },
             // explore blogs & view blog page
@@ -102,38 +99,20 @@ const router = createBrowserRouter([
                         )
                     }
                 ]
-            },
-            // // create/edit blog page
-            // {
-            //     id: "edit",
-            //     path: "/edit",
-            //     children: [
-            //         {
-            //             path: "/edit",
-            //             element: (
-            //                 <React.Suspense fallback={<LoadingScreen />} >
-            //                     <CreateBlog />
-            //                 </React.Suspense>
-            //             )
-            //         },
-            //         {
-            //             path: "/edit/:id",
-            //             element: (
-            //                 <React.Suspense fallback={<LoadingScreen />} >
-            //                     <EditBlog />
-            //                 </React.Suspense>
-            //             )
-            //         }
-            //     ]
-
-            // }
+            }
         ]
     },
 ]);
 
+const inDevEnv = process.env.NODE_ENV === "development";
+
 function BlogsApp() {
 
-    const env = devEnv({ extendedUrl: "blogs/graphql/", token: window.localStorage.getItem("token") ?? "" })
+    const env = prodEnv({
+        url: (inDevEnv ? "http://j.local:8000" : "https://api.beyondigital.agency") + "/blogs/graphql/",
+        "apiToken": inDevEnv ? "JAE_TEST_KEY" : "3df844de6b02d29ea2b9c3b83b924459488b93c0679aae8791a3ce4bbe9e3c41",
+        token: window.localStorage.getItem("token") ?? ""
+    })
 
     return (
         <ThemeWrapper>

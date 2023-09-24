@@ -6,9 +6,9 @@ const SnapchatIcon = (props: SvgIconProps) => {
 
     return (
         <svg
-            fill={theme.palette.mode === "dark" ? '#fffc00' : theme.palette.text.primary}
-            width="30px"
-            height="30px"
+            fill={theme.palette.text.primary}
+            width="24px"
+            height="24px"
             viewBox="0 0 48 48"
             id="b"
             xmlns="http://www.w3.org/2000/svg"

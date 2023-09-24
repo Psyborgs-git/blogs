@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<77d4a50b979cd44d992d6d104901d4ec>>
+ * @generated SignedSource<<4be50e8cb994e4521548b8975e16a2b0>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -26,6 +26,7 @@ export type RootQuery$data = {
     readonly edges: ReadonlyArray<{
       readonly node: {
         readonly id: string;
+        readonly title: string;
         readonly " $fragmentSpreads": FragmentRefs<"BlogThumbnail_data" | "DrawerButton_data">;
       } | null;
     } | null>;
@@ -99,6 +100,13 @@ v2 = {
     }
   ],
   "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "title",
+  "storageKey": null
 };
 return {
   "fragment": {
@@ -133,6 +141,7 @@ return {
                 "plural": false,
                 "selections": [
                   (v0/*: any*/),
+                  (v3/*: any*/),
                   {
                     "args": null,
                     "kind": "FragmentSpread",
@@ -188,13 +197,7 @@ return {
                 "plural": false,
                 "selections": [
                   (v0/*: any*/),
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "title",
-                    "storageKey": null
-                  },
+                  (v3/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -222,16 +225,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "65887f4c35218683f521345a52d1b11a",
+    "cacheID": "067d80e77e4f99ac74183c66b697f218",
     "id": null,
     "metadata": {},
     "name": "RootQuery",
     "operationKind": "query",
-    "text": "query RootQuery {\n  accounts {\n    edges {\n      node {\n        id\n        name\n        icon\n        isActive\n      }\n    }\n  }\n  blogs {\n    edges {\n      node {\n        id\n        ...BlogThumbnail_data\n        ...DrawerButton_data\n      }\n    }\n  }\n}\n\nfragment BlogThumbnail_data on BlogType {\n  id\n  title\n  description\n  cover\n  icon\n}\n\nfragment DrawerButton_data on BlogType {\n  id\n  title\n  icon\n}\n"
+    "text": "query RootQuery {\n  accounts {\n    edges {\n      node {\n        id\n        name\n        icon\n        isActive\n      }\n    }\n  }\n  blogs {\n    edges {\n      node {\n        id\n        title\n        ...BlogThumbnail_data\n        ...DrawerButton_data\n      }\n    }\n  }\n}\n\nfragment BlogThumbnail_data on BlogType {\n  id\n  title\n  description\n  cover\n  icon\n}\n\nfragment DrawerButton_data on BlogType {\n  id\n  title\n  icon\n}\n"
   }
 };
 })();
 
-(node as any).hash = "42faa8eb26956b4b457be49dbc846a39";
+(node as any).hash = "479f4ebefe9410bcc77c51482f2fd58d";
 
 export default node;

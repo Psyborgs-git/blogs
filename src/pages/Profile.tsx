@@ -1,13 +1,10 @@
 import React from 'react';
-import { Avatar, Box, Button, Chip, Container, Stack, Typography, keyframes } from '@mui/material';
-import { useParams } from 'react-router';
-import { useFragment, useLazyLoadQuery } from 'react-relay';
-import { ProfileQuery } from './__generated__/ProfileQuery.graphql';
+import { Avatar, Box, Button, Chip, Rating, Stack, Typography, keyframes } from '@mui/material';
 import { ContentCopy, Email, Verified } from '@mui/icons-material';
-import DrawerLayout from '../DraweredLayout';
-import { ProfileData$data, ProfileData$key } from './__generated__/ProfileData.graphql';
+import { SocialAccountsEnum } from './__generated__/MyProfileQuery.graphql';
+import SocialLink from '../components/SocialMediaButton';
 
-const graphql = require('babel-plugin-relay/macro');
+
 
 const blink = keyframes`
     0% {
@@ -25,34 +22,35 @@ const blink = keyframes`
 `;
 
 interface ProfileProps {
-    frag: ProfileData$key;
-};
+    readonly id: string;
+    readonly name: string | null;
+    readonly seoTags: ReadonlyArray<string> | null;
+    readonly isActive: boolean;
+    readonly isVerified: boolean;
+    readonly verifiedEmail: string | null;
+    readonly category: string | null;
+    readonly cover: string | null;
+    readonly icon: string | null;
+    readonly avrRating: number | null;
+    readonly numOfReviews: number | null;
+    readonly description: string | null;
+    readonly socials: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly id: string;
+                readonly username: string | null;
+                readonly type: SocialAccountsEnum | null;
+                readonly name: string | null;
+            } | null;
+        } | null>;
+    };
+}
 
-// const Icons: any = {
-//     "facebook": <Facebook />,
-//     "twitter": <Twitter />,
-//     "instagram": <Instagram />,
-//     "linkedin": <LinkedIn />,
-//     "github": <GitHub />,
-//     "snapchat": <SnapchatIcon />
-// };
-
-// const SocialLink = ({ key, link, icon }: { key: string; link: string; icon?: JSX.Element }) => {
-//     return icon ? (
-//         <Tooltip title={key} >
-//             <IconButton component="a" sx={{ color: "text.secondary" }} href={link} target="_blank" rel="noreferrer">
-//                 {icon}
-//             </IconButton>
-//         </Tooltip>
-//     ) : null;
-// };
-
-function ProfileCard({ account }: { account: Partial<ProfileData$data> }) {
+export function ProfileCard({ account }: { account: Partial<ProfileProps> }) {
     const time = new Date().toLocaleTimeString('en-US', { hour12: true, hour: 'numeric', minute: 'numeric', "second": undefined });
-    // const links = JSON.parse(account?.socials ?? {});
 
     return (
-        <Stack maxWidth="sm" alignSelf="center" direction="column" justifyContent="center" mt={1} alignItems="center" >
+        <Stack maxWidth="sm" alignSelf="center" direction="column" justifyContent="center" alignItems="center" >
 
             <Typography
                 variant="overline"
@@ -81,39 +79,51 @@ function ProfileCard({ account }: { account: Partial<ProfileData$data> }) {
             <Typography
                 variant="subtitle2"
                 color="text.secondary"
-                children={account?.position}
+                children={"Surat, Gujarat, IN"}
                 mb={2}
             />
 
             <Chip
-                avatar={account?.isVerified ? <Verified htmlColor="navy" /> : undefined}
+                avatar={<Verified htmlColor={account?.isVerified ? "green" : "gray"} />}
                 label={account?.category ?? " - "}
             />
 
+            <Rating
+                name="read-only"
+                value={(account?.avrRating ?? 0) * 5}
+                precision={0.1}
+                max={5}
+                readOnly
+                sx={{ my: 1 }}
+            />
+
             <Stack direction="row" alignItems="center" gap={1} my={2} alignSelf="center" >
-                <Box component="span" sx={{
-                    borderRadius: "50%",
-                    width: "5px",
-                    height: "5px",
-                    bgcolor: account?.availabilityStatus ? "green" : "red",
-                    animation: `${blink} 1000ms infinite`,
-                    msScrollbarShadowColor: account?.availabilityStatus ? "green" : "red"
-                }} />
+                <Box
+                    component="span"
+                    sx={{
+                        borderRadius: "50%",
+                        width: "5px",
+                        height: "5px",
+                        bgcolor: account?.isActive ? "green" : "red",
+                        animation: `${blink} 1000ms infinite`,
+                        msScrollbarShadowColor: account?.isActive ? "green" : "red"
+                    }} />
                 <Typography color="text.secondary" variant="subtitle2" >
-                    {account?.availabilityStatus ?? "Status: Unavailable"}
+                    {account?.isActive ? "Status: Available" : "Status: Unavailable"}
                 </Typography>
             </Stack>
 
             <Box sx={{ alignItems: "center", justifyContent: "space-evenly", gap: 2, flex: 1, alignSelf: "center", maxWidth: "100%" }}  >
-                {/* {Object.keys(links).map(
-                    (key: string) => (
+                {account?.socials?.edges?.map(
+                    (edge) => (
                         <SocialLink
-                            key={key}
-                            link={links[key]}
-                            icon={Icons[key]}
+                            key={edge?.node?.id ?? "sm"}
+                            name={edge?.node?.name ?? "sm"}
+                            username={edge?.node?.username ?? undefined}
+                            type={edge?.node?.type ?? undefined}
                         />
                     )
-                )} */}
+                )}
             </Box>
 
             <Stack gap={1.5} my={2} sx={{ flexDirection: { xs: "column", md: "row" } }} >
@@ -124,7 +134,9 @@ function ProfileCard({ account }: { account: Partial<ProfileData$data> }) {
                         width: { xs: "90vw", md: "200px" },
                         borderRadius: "12px", bgcolor: theme => theme.palette.text.primary,
                         color: "background.default"
-                    }}  >
+                    }}
+                    href={`mailto:${account?.verifiedEmail ?? ""}`}
+                >
                     <Typography variant="caption" >
                         Contact
                     </Typography>
@@ -135,7 +147,9 @@ function ProfileCard({ account }: { account: Partial<ProfileData$data> }) {
                 </Typography>
                 <Button
                     variant="contained"
-                    LinkComponent="a"
+                    onClick={() => {
+                        navigator.clipboard.writeText(account?.verifiedEmail ?? "");
+                    }}
                     sx={{
                         width: { xs: "90vw", md: "200px" },
                         boxShadow: (theme) => theme.shadows[5],
@@ -154,75 +168,3 @@ function ProfileCard({ account }: { account: Partial<ProfileData$data> }) {
     );
 
 };
-
-function Profile(props: ProfileProps) {
-    const data = useFragment(
-        graphql`
-            fragment ProfileData on BlogAccountType {
-                    id
-                    name
-                    seoTags
-                    isActive
-                    isVerified
-                    verifiedEmail
-                    category
-                    cover
-                    icon
-                    avrRating
-                    numOfReviews
-                    description
-                    position
-                    # socials
-                    availabilityStatus
-                    reviews {
-                        edges {
-                            node {
-                                ...Review_data
-                            }
-                        }
-                    }
-                }
-        `,
-        props.frag
-    )
-
-
-    return (
-        <DrawerLayout>
-            <Container maxWidth='md' >
-                <Stack direction="column" pb="200px" gap={1} justifyContent="center" mt={1} alignItems="center" >
-
-                    <ProfileCard account={data} />
-
-                </Stack>
-            </Container>
-        </DrawerLayout>
-    );
-
-};
-
-
-export default function NodeFetcher() {
-
-    const id = useParams().id as string;
-    const data = useLazyLoadQuery<ProfileQuery>(
-        graphql`
-            query ProfileQuery ($id: ID!) {
-                node(id: $id) {
-                    ...ProfileData
-                }
-            }
-        `,
-        { id },
-        { fetchPolicy: "store-or-network" }
-    );
-    if (data?.node) { // add null check here
-        return (
-            <Profile frag={data.node} />
-        );
-    }
-    return null; // return null if data is null
-
-};
-
-

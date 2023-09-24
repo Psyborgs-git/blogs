@@ -8,7 +8,6 @@ const graphql = require('babel-plugin-relay/macro');
 
 interface BlogThumbnailProps {
     fragRef: BlogThumbnail_data$key;
-    onClick: (id?: string) => void;
     sx?: SxProps;
 };
 
@@ -22,7 +21,7 @@ export const fragQuery = graphql`
     }
 `;
 
-function BlogThumbnail({ fragRef, onClick, sx }: BlogThumbnailProps) {
+function BlogThumbnail({ fragRef, sx }: BlogThumbnailProps) {
 
     const data = useFragment(fragQuery, fragRef)
     const naviagte = useNavigate();

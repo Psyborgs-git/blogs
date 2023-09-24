@@ -375,6 +375,7 @@ input MobileNumberInput {
 }
 
 type Mutation {
+	subscribe(input: SubscriberMutationInput!): SubscriberMutationPayload
 	logout(input: LogoutMutationInput!): LogoutMutationPayload
 	authenticate(input: AuthenticationInput!): AuthenticationPayload
 	mobileAuth(input: MobileAuthenticationInput!): MobileAuthenticationPayload
@@ -526,6 +527,20 @@ enum SocialAccountsEnum {
 	SOUNDCLOUD
 	TINDER
 	BADOO
+}
+
+input SubscriberMutationInput {
+	name: String!
+	email: String
+	mobile: MobileNumberInput
+	node: String!
+	clientMutationId: String
+}
+
+type SubscriberMutationPayload {
+	success: Boolean
+	error: String
+	clientMutationId: String
 }
 
 input Verification {

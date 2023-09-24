@@ -3,9 +3,6 @@ import React from 'react';
 // mui
 import { Box, Stack, TextField, Toolbar, Typography } from '@mui/material';
 
-// react router
-import { useNavigate } from 'react-router';
-
 // graphql relay
 import { useLazyLoadQuery } from 'react-relay';
 import { RootQuery } from './__generated__/RootQuery.graphql';
@@ -15,11 +12,12 @@ import { RootQuery } from './__generated__/RootQuery.graphql';
 
 // custom components
 import DrawerLayout from '../DraweredLayout';
-import { DrawerContext, HeaderContext, StyledAppbar } from '../Layout';
+import { DrawerContext, StyledAppbar } from '../Layout';
 import ThemeSwitch from '../components/ThemeSwitch';
 import Hamburger from '../components/Hamburger';
 import BlogThumbnail from '../components/BlogThumbnail';
 import DrawerButton from '../components/DrawerButton';
+import { Helmet } from 'react-helmet';
 
 // graphql 
 const graphql = require('babel-plugin-relay/macro');
@@ -45,6 +43,7 @@ function Root() {
                         edges {
                           node {
                             id
+                            title
                             ...BlogThumbnail_data
                             ...DrawerButton_data
                           }
@@ -55,19 +54,29 @@ function Root() {
         {},
         { "fetchPolicy": "store-or-network" }
     );
-    const navigate = useNavigate();
     const { isDrawerOpen, toggleDrawer } = React.useContext(DrawerContext);
-    const { toggleHeader } = React.useContext(HeaderContext);
     const [search, setSearch] = React.useState("");
-
-    React.useEffect(() => {
-        toggleHeader(false);
-
-        return () => toggleHeader(true);
-    }, []);
+    const blogs = data.blogs?.edges?.filter(v => search ? v?.node?.title?.includes(search) : true) ?? [];
 
     return (
         <>
+            <Helmet>
+                <title>Blogs: Home</title>
+                <meta name="description" content="Blogs" />
+                <meta name="keywords" content="Blogs, Technology, TechBlog, Vlogs, API. OpenSource" />
+                <meta name="author" content="Jainam Shah" />
+                <meta property="og:title" content="Blogs" />
+                <meta property="og:description" content="Blogs" />
+                <meta property="og:url" content="https://blogs.beyondigital.agency" />
+                <meta property="og:site_name" content="Blogs" />
+                <meta property="og:type" content="website" />
+                <meta property="og:image" content="https://blogs.beyondigital.agency/logo.png" />
+                <meta property="og:image:alt" content="Blogs" />
+                <meta property="og:image:width" content="512" />
+                <meta property="og:image:height" content="512" />
+                <meta property="og:image:type" content="image/png" />
+            </Helmet>
+
             {/* header for home page */}
             <StyledAppbar
                 position='fixed'
@@ -90,22 +99,53 @@ function Root() {
             {/*  */}
             <DrawerLayout
                 children={
-                    <Stack
-                        gap={1}
-                        paddingTop={2}
-                        children={data.blogs?.edges?.map(
-                            (blog, index) => (
-                                <BlogThumbnail
-                                    onClick={id => navigate(`/b/blog/${id}`)}
-                                    fragRef={blog?.node as any}
-                                    key={blog?.node?.id ?? index}
-                                />
-                            )
-                        )}
-                    />
+                    <Box
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            flex: 1,
+                            pt: "50px",
+                            pb: "210px",
+                            height: "max-content",
+                        }}
+                    >
+                        <Typography
+                            variant="h5"
+                            children="Blogs"
+                            color="text.secondary"
+                            textTransform="uppercase"
+                            sx={{
+                                ml: "10px",
+                                mb: "10px",
+                                fontWeight: "bold",
+                                textAlign: "center",
+                            }}
+                        />
+                        <Stack
+                            gap={1}
+                            children={data.blogs?.edges?.map(
+                                (blog, index) => (
+                                    <BlogThumbnail
+                                        fragRef={blog?.node as any}
+                                        key={blog?.node?.id ?? index}
+                                    />
+                                )
+                            )}
+                        />
+                    </Box>
                 }
                 drawerChildren={
-                    <Box component="span" px={2} >
+                    <Box
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            flex: 1,
+                            alignItems: "center",
+                            pb: "210px",
+                            height: "max-content"
+                        }}
+                    >
+
                         <StyledAppbar
                             position='sticky'
                             sx={{
@@ -129,17 +169,29 @@ function Root() {
                             />
                         </StyledAppbar>
 
-                        <Stack direction="column" gap={"10px"} mt={2} pt={2} pb={4} >
-                            <Typography variant="h6" children="Blogs" color="text.secondary" />
-                            {data.blogs?.edges?.map(
-                                (blog, index) => blog?.node ? (
-                                    <DrawerButton
-                                        frag={blog?.node}
-                                        key={blog?.node?.id ?? index}
-                                    />
-                                ) : null
-                            )}
-                        </Stack>
+                        <Stack
+                            direction="column"
+                            sx={{
+                                width: "100%",
+                                gap: "10px",
+                                mt: "30px",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}
+                            children={blogs.length === 0 ?
+                                (
+                                    <Typography variant="body1" children="No blogs to show here" color="text.secondary" />
+                                )
+                                : blogs.map(
+                                    (blog, index) => blog?.node ? (
+                                        <DrawerButton
+                                            frag={blog?.node}
+                                            key={blog?.node?.id ?? index}
+                                        />
+                                    ) : null
+                                )
+                            }
+                        />
                     </Box>
                 }
             />

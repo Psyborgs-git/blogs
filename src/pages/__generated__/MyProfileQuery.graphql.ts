@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<57068ee153b96c6bdc041d56d1950e3d>>
+ * @generated SignedSource<<fe8982bfdc2e4280b75d7bffef8f463b>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,9 +10,10 @@
 
 import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
+export type SocialAccountsEnum = "INSTAGRAM" | "FACEBOOK" | "TWITTER" | "WHATSAPP" | "LINKEDIN" | "YOUTUBE" | "TIKTOK" | "SNAPCHAT" | "TELEGRAM" | "PINTEREST" | "REDDIT" | "TUMBLR" | "GITHUB" | "MEDIUM" | "DISCORD" | "OTHER" | "SKYPE" | "QUORA" | "TWITCH" | "SPOTIFY" | "SOUNDCLOUD" | "TINDER" | "BADOO" | "%future added value";
 export type MyProfileQuery$variables = {};
 export type MyProfileQuery$data = {
-  readonly myAccounts: {
+  readonly accounts: {
     readonly edges: ReadonlyArray<{
       readonly node: {
         readonly id: string;
@@ -26,10 +27,22 @@ export type MyProfileQuery$data = {
         readonly icon: string | null;
         readonly avrRating: number | null;
         readonly numOfReviews: number | null;
-        readonly reviews: {
+        readonly description: string | null;
+        readonly socials: {
           readonly edges: ReadonlyArray<{
             readonly node: {
-              readonly " $fragmentSpreads": FragmentRefs<"Review_data">;
+              readonly id: string;
+              readonly username: string | null;
+              readonly name: string | null;
+              readonly type: SocialAccountsEnum | null;
+            } | null;
+          } | null>;
+        };
+        readonly blogs: {
+          readonly edges: ReadonlyArray<{
+            readonly node: {
+              readonly id: string;
+              readonly " $fragmentSpreads": FragmentRefs<"BlogThumbnail_data">;
             } | null;
           } | null>;
         } | null;
@@ -119,6 +132,62 @@ v10 = {
   "kind": "ScalarField",
   "name": "numOfReviews",
   "storageKey": null
+},
+v11 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "description",
+  "storageKey": null
+},
+v12 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "SocialAccountTypeConnection",
+  "kind": "LinkedField",
+  "name": "socials",
+  "plural": false,
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "SocialAccountTypeEdge",
+      "kind": "LinkedField",
+      "name": "edges",
+      "plural": true,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "SocialAccountType",
+          "kind": "LinkedField",
+          "name": "node",
+          "plural": false,
+          "selections": [
+            (v0/*: any*/),
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "username",
+              "storageKey": null
+            },
+            (v1/*: any*/),
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "type",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    }
+  ],
+  "storageKey": null
 };
 return {
   "fragment": {
@@ -132,7 +201,7 @@ return {
         "args": null,
         "concreteType": "BlogAccountTypeConnection",
         "kind": "LinkedField",
-        "name": "myAccounts",
+        "name": "accounts",
         "plural": false,
         "selections": [
           {
@@ -162,18 +231,20 @@ return {
                   (v8/*: any*/),
                   (v9/*: any*/),
                   (v10/*: any*/),
+                  (v11/*: any*/),
+                  (v12/*: any*/),
                   {
                     "alias": null,
                     "args": null,
-                    "concreteType": "ReviewTypeConnection",
+                    "concreteType": "BlogTypeConnection",
                     "kind": "LinkedField",
-                    "name": "reviews",
+                    "name": "blogs",
                     "plural": false,
                     "selections": [
                       {
                         "alias": null,
                         "args": null,
-                        "concreteType": "ReviewTypeEdge",
+                        "concreteType": "BlogTypeEdge",
                         "kind": "LinkedField",
                         "name": "edges",
                         "plural": true,
@@ -181,15 +252,16 @@ return {
                           {
                             "alias": null,
                             "args": null,
-                            "concreteType": "ReviewType",
+                            "concreteType": "BlogType",
                             "kind": "LinkedField",
                             "name": "node",
                             "plural": false,
                             "selections": [
+                              (v0/*: any*/),
                               {
                                 "args": null,
                                 "kind": "FragmentSpread",
-                                "name": "Review_data"
+                                "name": "BlogThumbnail_data"
                               }
                             ],
                             "storageKey": null
@@ -224,7 +296,7 @@ return {
         "args": null,
         "concreteType": "BlogAccountTypeConnection",
         "kind": "LinkedField",
-        "name": "myAccounts",
+        "name": "accounts",
         "plural": false,
         "selections": [
           {
@@ -254,18 +326,20 @@ return {
                   (v8/*: any*/),
                   (v9/*: any*/),
                   (v10/*: any*/),
+                  (v11/*: any*/),
+                  (v12/*: any*/),
                   {
                     "alias": null,
                     "args": null,
-                    "concreteType": "ReviewTypeConnection",
+                    "concreteType": "BlogTypeConnection",
                     "kind": "LinkedField",
-                    "name": "reviews",
+                    "name": "blogs",
                     "plural": false,
                     "selections": [
                       {
                         "alias": null,
                         "args": null,
-                        "concreteType": "ReviewTypeEdge",
+                        "concreteType": "BlogTypeEdge",
                         "kind": "LinkedField",
                         "name": "edges",
                         "plural": true,
@@ -273,7 +347,7 @@ return {
                           {
                             "alias": null,
                             "args": null,
-                            "concreteType": "ReviewType",
+                            "concreteType": "BlogType",
                             "kind": "LinkedField",
                             "name": "node",
                             "plural": false,
@@ -283,71 +357,12 @@ return {
                                 "alias": null,
                                 "args": null,
                                 "kind": "ScalarField",
-                                "name": "comment",
+                                "name": "title",
                                 "storageKey": null
                               },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "rating",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "timestamp",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "concreteType": "ContentTypeConnection",
-                                "kind": "LinkedField",
-                                "name": "media",
-                                "plural": false,
-                                "selections": [
-                                  {
-                                    "alias": null,
-                                    "args": null,
-                                    "concreteType": "ContentTypeEdge",
-                                    "kind": "LinkedField",
-                                    "name": "edges",
-                                    "plural": true,
-                                    "selections": [
-                                      {
-                                        "alias": null,
-                                        "args": null,
-                                        "concreteType": "ContentType",
-                                        "kind": "LinkedField",
-                                        "name": "node",
-                                        "plural": false,
-                                        "selections": [
-                                          (v0/*: any*/),
-                                          {
-                                            "alias": null,
-                                            "args": null,
-                                            "kind": "ScalarField",
-                                            "name": "url",
-                                            "storageKey": null
-                                          },
-                                          {
-                                            "alias": null,
-                                            "args": null,
-                                            "kind": "ScalarField",
-                                            "name": "type",
-                                            "storageKey": null
-                                          }
-                                        ],
-                                        "storageKey": null
-                                      }
-                                    ],
-                                    "storageKey": null
-                                  }
-                                ],
-                                "storageKey": null
-                              }
+                              (v11/*: any*/),
+                              (v7/*: any*/),
+                              (v8/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -369,16 +384,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "d760139e1fa27466b8bb155d7045b834",
+    "cacheID": "9a5e720db015cae0aa391231c58f8bb4",
     "id": null,
     "metadata": {},
     "name": "MyProfileQuery",
     "operationKind": "query",
-    "text": "query MyProfileQuery {\n  myAccounts {\n    edges {\n      node {\n        id\n        name\n        seoTags\n        isActive\n        isVerified\n        verifiedEmail\n        category\n        cover\n        icon\n        avrRating\n        numOfReviews\n        reviews {\n          edges {\n            node {\n              ...Review_data\n              id\n            }\n          }\n        }\n      }\n    }\n  }\n}\n\nfragment Review_data on ReviewType {\n  id\n  comment\n  rating\n  timestamp\n  media {\n    edges {\n      node {\n        id\n        url\n        type\n      }\n    }\n  }\n}\n"
+    "text": "query MyProfileQuery {\n  accounts {\n    edges {\n      node {\n        id\n        name\n        seoTags\n        isActive\n        isVerified\n        verifiedEmail\n        category\n        cover\n        icon\n        avrRating\n        numOfReviews\n        description\n        socials {\n          edges {\n            node {\n              id\n              username\n              name\n              type\n            }\n          }\n        }\n        blogs {\n          edges {\n            node {\n              id\n              ...BlogThumbnail_data\n            }\n          }\n        }\n      }\n    }\n  }\n}\n\nfragment BlogThumbnail_data on BlogType {\n  id\n  title\n  description\n  cover\n  icon\n}\n"
   }
 };
 })();
 
-(node as any).hash = "c4e517b1680e4346d0c0369363e1300d";
+(node as any).hash = "fd1d1143e7a45abd388329d57b2a3e3e";
 
 export default node;

@@ -8,7 +8,7 @@ interface DrawerLayoutProps {
     sx?: SxProps<Theme>;
 };
 
-const height = "calc(100vh - 75px)";
+const height = "100vh";
 
 function DrawerLayout({
     drawerChildren,
@@ -35,13 +35,13 @@ function DrawerLayout({
                     xs: "none 1fr",
                     md: "1fr 2fr"
                 },
-                pl: {
-                    xs: 0,
-                    md: "72px"
-                },
-                height,
                 overflow: "hidden",
-                width: "calc(100vw- 72px)"
+                width: "100%",
+                height,
+                "&::-webkit-scrollbar": {
+                    display: "none"
+                },
+                pt: "72px"
             },
             ...(Array.isArray(sx) ? sx : [sx]),
             ]}
@@ -54,23 +54,21 @@ function DrawerLayout({
                         flex: 1,
                         display: "flex",
                         flexdirection: "column",
-                        height,
                         width: "100%",
-                        overflowY: "scroll",
-                        borderRight: "1px solid rgba(0,0,0,0.1)",
-                        boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.2)",
+                        borderRight: theme => `1px solid ${theme.palette.divider}`,
                         bgcolor: "background.default",
+                        height: "100%",
+                        overflowY: "scroll",
                         "&::-webkit-scrollbar": {
                             display: "none"
                         },
-                        zIndex: 1,
+                        zIndex: 1000,
                         ...(isMobile && {
-                            position: "absolute",
+                            position: "fixed",
                             top: 0,
                             left: 0,
                             bottom: 0,
                             width: "80vw",
-                            zIndex: 99999,
                             transform: isDrawerOpen ? "translateX(0)" : "translateX(-100%)",
                             transition: "transform 300ms ease-in-out",
                             boxShadow: theme => isDrawerOpen ? `0px 0px 5px 5px ${theme.palette.background.paper}` : "none",
@@ -86,13 +84,12 @@ function DrawerLayout({
                 sx={{
                     flex: 1,
                     display: "flex",
-                    height,
                     width: "100%",
+                    height: "100%",
                     overflowY: "scroll",
                     "&::-webkit-scrollbar": {
                         display: "none"
-                    },
-                    scrollPaddingBottom: "100px",
+                    }
                 }}
             />
 
