@@ -1,0 +1,240 @@
+schema {
+	query: Query
+	mutation: Mutations
+}
+
+type Account implements Node {
+	id: ID!
+	username: String
+	verifiedMobileNumber: MobileNumber
+	verifiedEmailAddress: EmailAddressType
+	verifiedEmails(
+		offset: Int
+		before: String
+		after: String
+		first: Int
+		last: Int
+	): EmailAddressTypeConnection!
+	blocked(
+		offset: Int
+		before: String
+		after: String
+		first: Int
+		last: Int
+	): AccountConnection!
+}
+
+type AccountConnection {
+	pageInfo: PageInfo!
+	edges: [AccountEdge]!
+}
+
+type AccountEdge {
+	node: Account
+	cursor: String!
+}
+
+type ApplicationType implements Node {
+	name: String
+	description: String
+	developer: Account!
+	admins(
+		offset: Int
+		before: String
+		after: String
+		first: Int
+		last: Int
+	): AccountConnection!
+	domain: String
+	apiKey: String
+	expires: DateTime
+	isWebApp: Boolean!
+	isMobileApp: Boolean!
+	isHostNetwork: Boolean!
+	ssoRedirectUrl: String
+	id: ID!
+	icon: String
+	cover: String
+	createdAt: DateTime
+	lastUpdated: DateTime
+	avrRating: Float
+	reviews(
+		offset: Int
+		before: String
+		after: String
+		first: Int
+		last: Int
+	): ReviewTypeConnection
+	numOfReviews: Int
+	status: String
+}
+
+input AuthenticationInput {
+	credentials: CredentialInput!
+	deviceName: String!
+	clientMutationId: String
+}
+
+type AuthenticationPayload {
+	token: String
+	error: String
+	success: Boolean
+	clientMutationId: String
+}
+
+input CredentialInput {
+	username: String!
+	password: String!
+}
+
+scalar DateTime
+
+scalar Decimal
+
+type EmailAddressType implements Node {
+	id: ID!
+	email: String!
+}
+
+type EmailAddressTypeConnection {
+	pageInfo: PageInfo!
+	edges: [EmailAddressTypeEdge]!
+}
+
+type EmailAddressTypeEdge {
+	node: EmailAddressType
+	cursor: String!
+}
+
+input EmailAuthenticationInput {
+	email: String
+	verification: Verification
+	deviceName: String
+	checkExisting: Boolean
+	clientMutationId: String
+}
+
+type EmailAuthenticationPayload {
+	token: String
+	id: String
+	error: String
+	success: Boolean
+	userExists: Boolean
+	clientMutationId: String
+}
+
+scalar JSONString
+
+input LogoutMutationInput {
+	clientMutationId: String
+}
+
+type LogoutMutationPayload {
+	success: Boolean
+	error: String
+	clientMutationId: String
+}
+
+input MobileAuthenticationInput {
+	mobile: MobileNumberInput
+	verification: Verification
+	whatsapp: Boolean
+	deviceName: String
+	checkExisting: Boolean
+	clientMutationId: String
+}
+
+type MobileAuthenticationPayload {
+	token: String
+	id: String
+	error: String
+	success: Boolean
+	userExists: Boolean
+	clientMutationId: String
+}
+
+type MobileNumber implements Node {
+	countryCode: String!
+	id: ID!
+	number: String
+}
+
+input MobileNumberInput {
+	countryCode: String = "+91"
+	number: String!
+}
+
+type Mutations {
+	logout(input: LogoutMutationInput!): LogoutMutationPayload
+	authenticate(input: AuthenticationInput!): AuthenticationPayload
+	mobileAuth(input: MobileAuthenticationInput!): MobileAuthenticationPayload
+	signup(input: SignupInput!): SignupPayload
+	emailAuth(input: EmailAuthenticationInput!): EmailAuthenticationPayload
+}
+
+interface Node {
+	id: ID!
+}
+
+type PageInfo {
+	hasNextPage: Boolean!
+	hasPreviousPage: Boolean!
+	startCursor: String
+	endCursor: String
+}
+
+type Query {
+	isLoggedIn: Boolean
+	myAccount: Account
+	settings: JSONString
+	verified: Verified
+	checkUsername(username: String!): Boolean
+	app: ApplicationType
+}
+
+type ReviewType implements Node {
+	id: ID!
+	user: Account
+	rating: Decimal!
+	comment: String
+	timestamp: DateTime!
+}
+
+type ReviewTypeConnection {
+	pageInfo: PageInfo!
+	edges: [ReviewTypeEdge]!
+}
+
+type ReviewTypeEdge {
+	node: ReviewType
+	cursor: String!
+}
+
+input SignupInput {
+	username: String
+	password: String
+	clientMutationId: String
+}
+
+type SignupPayload {
+	token: String
+	success: Boolean
+	error: String
+	clientMutationId: String
+}
+
+input Verification {
+	id: String!
+	otp: String!
+}
+
+type Verified {
+	mobileNumber: MobileNumber
+	emails(
+		offset: Int
+		before: String
+		after: String
+		first: Int
+		last: Int
+	): EmailAddressTypeConnection
+}
