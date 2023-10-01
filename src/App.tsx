@@ -14,6 +14,7 @@ import ThemeWrapper from './theme/Wrapper';
 import {
     createBrowserRouter,
     RouterProvider,
+    useNavigate,
 } from "react-router-dom";
 
 // error pages
@@ -74,15 +75,7 @@ const router = createBrowserRouter([
                                 <MyProfile />
                             </React.Suspense>
                         ),
-                    },
-                    // {
-                    //     path: "/profile/:id",
-                    //     element: (
-                    //         <React.Suspense fallback={<LoadingScreen />} >
-                    //             <Profile />
-                    //         </React.Suspense>
-                    //     ),
-                    // },
+                    }
                 ]
             },
             // explore blogs & view blog page
@@ -112,7 +105,7 @@ function BlogsApp() {
         url: (inDevEnv ? "http://j.local:8000" : "https://api.beyondigital.agency") + "/blogs/graphql/",
         "apiToken": inDevEnv ? "JAE_TEST_KEY" : "3df844de6b02d29ea2b9c3b83b924459488b93c0679aae8791a3ce4bbe9e3c41",
         token: window.localStorage.getItem("token") ?? ""
-    })
+    });
 
     return (
         <ThemeWrapper>

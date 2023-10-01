@@ -117,6 +117,7 @@ function Blog() {
                     sx={{
                         py: "75px",
                         height: "max-content",
+                        maxWidth: "100%"
                     }}
                 >
                     <Stack direction="column" gap={1} mb="50px" >
