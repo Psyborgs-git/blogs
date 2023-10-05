@@ -1,7 +1,7 @@
 import React, { createContext } from 'react';
 import { Outlet, useMatch, useNavigate } from 'react-router';
 import { AppBar, Box, IconButton, Toolbar, Tooltip, styled } from '@mui/material';
-import { Person, PersonOutline, ViewStream, ViewStreamOutlined } from '@mui/icons-material';
+import { Add, AddOutlined, Person, PersonOutline, ViewStream, ViewStreamOutlined } from '@mui/icons-material';
 
 // styled appbar 
 export const StyledAppbar = styled(AppBar)(({ theme }) => ({
@@ -32,7 +32,15 @@ function Layout() {
     const location = {
         home: useMatch("/"),
         profile: useMatch("/profile/"),
+        createBlog: useMatch("/blog/new"),
     };
+
+    React.useEffect(() => {
+        const token = window.localStorage.getItem("token");
+        if (!token) {
+            navigate("/login");
+        }
+    });
 
     return (
         <DrawerContext.Provider value={{ isDrawerOpen, toggleDrawer }}>
@@ -40,7 +48,8 @@ function Layout() {
             {/* main content section */}
             <Box
                 sx={{
-                    pl: { md: "75px" }
+                    pl: { md: "75px" },
+                    pb: { xs: "72px", md: "0px" }
                 }}
             >
                 <Outlet />
@@ -99,6 +108,15 @@ function Layout() {
                     <Tooltip title="Home" placement={"right"}>
                         <IconButton>
                             {location.home ? <ViewStream sx={{ color: "text.primary" }} /> : <ViewStreamOutlined onClick={() => navigate("/")} />}
+                        </IconButton>
+                    </Tooltip>
+
+                    <Tooltip title="Create Blog" placement={"right"}>
+                        <IconButton>
+                            {location.createBlog ?
+                                <Add sx={{ color: "text.primary" }} /> :
+                                <AddOutlined onClick={() => navigate("/blog/new")} />
+                            }
                         </IconButton>
                     </Tooltip>
 

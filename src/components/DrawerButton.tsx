@@ -16,6 +16,7 @@ function DrawerButton(props: DrawerButtonProps) {
             fragment DrawerButton_data on BlogType {
                 id
                 title
+                category
                 icon
             }
         `,
@@ -50,19 +51,31 @@ function DrawerButton(props: DrawerButtonProps) {
                 variant="rounded"
                 sx={{ height: "54px", width: "54px", borderRadius: "21px" }}
             />
-            <Typography
-                variant="h6"
-                children={data?.title}
-                color="text.secondary"
-                sx={{
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    display: "-webkit-box",
-                    WebkitBoxOrient: "vertical",
-                    WebkitLineClamp: 2, // Change this value to adjust the number of lines displayed
-                    lineHeight: "1.5rem", // Change this value to adjust the line height
-                }}
-            />
+            <Stack justifyContent="space-around" direction="column" >
+                <Typography
+                    variant="h6"
+                    children={data?.title}
+                    sx={{
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        display: "-webkit-box",
+                        WebkitBoxOrient: "vertical",
+                        WebkitLineClamp: 1, // Change this value to adjust the number of lines displayed
+                    }}
+                />
+                <Typography
+                    variant="overline"
+                    children={data?.category}
+                    sx={{
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        display: "-webkit-box",
+                        WebkitBoxOrient: "vertical",
+                        WebkitLineClamp: 1, // Change this value to adjust the number of lines displayed
+                        color: theme => theme.palette.text.disabled
+                    }}
+                />
+            </Stack>
         </Stack>
     );
 

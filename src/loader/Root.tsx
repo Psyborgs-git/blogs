@@ -1,8 +1,6 @@
 import React from 'react';
-import { Box, keyframes, styled, Typography } from '@mui/material';
-import '@fontsource/megrim';
-import '@fontsource/poppins';
-import Logo_BDT from '../svgs/bdt/Logo';
+import { Avatar, Box, keyframes } from '@mui/material';
+
 
 const RotatorAnimation = keyframes`
     0% {
@@ -15,16 +13,6 @@ const RotatorAnimation = keyframes`
     }
 `;
 
-export const TN = styled(Typography)({
-    fontFamily: "Poppins",
-    fontSize: "9rem",
-    textTransform: "lowercase",
-    fontWeight: 400,
-    strokeWidth: "0.1rem",
-    stroke: "#eee",
-    color: "#363636",
-    strokeDasharray: "0.1rem",
-});
 
 export default function NewRootLoader() {
     return (
@@ -38,24 +26,32 @@ export default function NewRootLoader() {
                 bgcolor: "background.default",
                 color: "text.primary"
             }}>
-            <Logo_BDT
-                BoxProps={{
-                    sx: {
-                        borderRadius: "50%",
-                        boxShadow: theme => `0px 4px 4px 0px ${theme.palette.divider}`,
-                        height: "220px",
-                        width: "220px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        animation: `${RotatorAnimation} 2000ms ease-in-out`,
-                        alignSelf: "center"
-                    }
+            <Box
+                sx={{
+                    borderRadius: "21px",
+                    boxShadow: `0px 4px 4px 0px #ddd`,
+                    height: "220px",
+                    width: "220px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    alignSelf: "center",
+                    bgcolor: "#fff"
                 }}
-                svgProps={{
-                    height: "200",
-                    width: "200"
-                }}
+                children={
+                    <Avatar
+                        src="/logo.png"
+                        alt="logo"
+                        variant="rounded"
+                        sx={{
+                            height: "200px",
+                            borderRadius: "50%",
+                            width: "200px",
+                            animation: `${RotatorAnimation} 2500ms ease-in-out`,
+                            alignSelf: "center",
+                        }}
+                    />
+                }
             />
         </Box>
     );

@@ -1,0 +1,560 @@
+schema {
+	query: Query
+	mutation: Mutation
+}
+
+type Account implements Node {
+	id: ID!
+	username: String
+	verifiedMobileNumber: MobileNumber
+	verifiedEmailAddress: EmailAddressType
+	verifiedEmails(
+		offset: Int
+		before: String
+		after: String
+		first: Int
+		last: Int
+	): EmailAddressTypeConnection!
+	blocked(
+		offset: Int
+		before: String
+		after: String
+		first: Int
+		last: Int
+		username: String
+		username_Icontains: String
+	): AccountConnection!
+}
+
+type AccountConnection {
+	pageInfo: PageInfo!
+	edges: [AccountEdge]!
+}
+
+type AccountEdge {
+	node: Account
+	cursor: String!
+}
+
+type ApplicationType implements Node {
+	name: String
+	description: String
+	developer: Account!
+	admins(
+		offset: Int
+		before: String
+		after: String
+		first: Int
+		last: Int
+		username: String
+		username_Icontains: String
+	): AccountConnection!
+	domain: String
+	apiKey: String
+	expires: DateTime
+	isWebApp: Boolean!
+	isMobileApp: Boolean!
+	isHostNetwork: Boolean!
+	ssoRedirectUrl: String
+	id: ID!
+	icon: String
+	cover: String
+	createdAt: DateTime
+	lastUpdated: DateTime
+	avrRating: Float
+	reviews(
+		offset: Int
+		before: String
+		after: String
+		first: Int
+		last: Int
+	): ReviewTypeConnection
+	numOfReviews: Int
+	status: String
+}
+
+type ApplicationTypeConnection {
+	pageInfo: PageInfo!
+	edges: [ApplicationTypeEdge]!
+}
+
+type ApplicationTypeEdge {
+	node: ApplicationType
+	cursor: String!
+}
+
+input AuthenticationInput {
+	credentials: CredentialInput!
+	deviceName: String!
+	clientMutationId: String
+}
+
+type AuthenticationPayload {
+	token: String
+	error: String
+	success: Boolean
+	clientMutationId: String
+}
+
+input BlogAccountMutationInput {
+	id: ID
+	name: String
+	seoTags: [String]
+	isActive: Boolean
+	email: String
+	category: String
+	position: String
+	socials: [SocialMediaInput]
+	availabilityStatus: String
+	clientMutationId: String
+}
+
+type BlogAccountMutationPayload {
+	blogAccount: BlogAccountType
+	success: Boolean
+	error: String
+	clientMutationId: String
+}
+
+type BlogAccountType implements Node {
+	id: ID!
+	name: String
+	description: String
+	seoTags: [String!]
+	isActive: Boolean!
+	isVerified: Boolean!
+	allowedApis(
+		offset: Int
+		before: String
+		after: String
+		first: Int
+		last: Int
+	): ApplicationTypeConnection!
+	position: String
+	socials(
+		offset: Int
+		before: String
+		after: String
+		first: Int
+		last: Int
+		name_Icontains: String
+		username_Icontains: String
+		type: String
+	): SocialAccountTypeConnection!
+	availabilityStatus: String
+	category: String
+	subCategory: String
+	icon: String
+	cover: String
+	avrRating: Float
+	reviews(
+		offset: Int
+		before: String
+		after: String
+		first: Int
+		last: Int
+	): ReviewTypeConnection
+	numOfReviews: Int
+	blogs(
+		offset: Int
+		before: String
+		after: String
+		first: Int
+		last: Int
+		description_Icontains: String
+		title_Icontains: String
+	): BlogTypeConnection
+	canEdit: Boolean
+	verifiedEmail: String
+}
+
+type BlogAccountTypeConnection {
+	pageInfo: PageInfo!
+	edges: [BlogAccountTypeEdge]!
+}
+
+type BlogAccountTypeEdge {
+	node: BlogAccountType
+	cursor: String!
+}
+
+input BlogMutationInput {
+	id: ID
+	blogAccountId: ID
+	title: String
+	description: String
+	tags: [String]
+	published: Boolean
+	archived: Boolean
+	references: JSONString
+	sectionOrder: JSONString
+	category: String
+	clientMutationId: String
+}
+
+type BlogMutationPayload {
+	success: Boolean
+	error: String
+	blog: BlogType
+	clientMutationId: String
+}
+
+type BlogSectionType implements Node {
+	id: ID!
+	blog: BlogType!
+	title: String!
+	content: String!
+	mediaLinks: JSONString
+	cover: String
+	video: String
+}
+
+type BlogSectionTypeConnection {
+	pageInfo: PageInfo!
+	edges: [BlogSectionTypeEdge]!
+}
+
+type BlogSectionTypeEdge {
+	node: BlogSectionType
+	cursor: String!
+}
+
+type BlogType implements Node {
+	id: ID!
+	author: BlogAccountType!
+	title: String!
+	description: String!
+	tags: [String!]
+	published: Boolean!
+	references: JSONString
+	sectionOrder: JSONString
+	createdAt: DateTime
+	lastUpdated: DateTime
+	category: String
+	subCategory: String
+	avrRating: Float
+	reviews(
+		offset: Int
+		before: String
+		after: String
+		first: Int
+		last: Int
+	): ReviewTypeConnection
+	numOfReviews: Int
+	icon: String
+	cover: String
+	sections(
+		offset: Int
+		before: String
+		after: String
+		first: Int
+		last: Int
+		title_Icontains: String
+	): BlogSectionTypeConnection
+}
+
+type BlogTypeConnection {
+	pageInfo: PageInfo!
+	edges: [BlogTypeEdge]!
+}
+
+type BlogTypeEdge {
+	node: BlogType
+	cursor: String!
+}
+
+type ContentType implements Node {
+	createdAt: DateTime
+	lastUpdated: DateTime
+	user: Account
+	text: String
+	file: String
+	isPrivate: Boolean!
+	id: ID!
+	type: String
+	url: String
+	copyright: String
+}
+
+type ContentTypeConnection {
+	pageInfo: PageInfo!
+	edges: [ContentTypeEdge]!
+}
+
+type ContentTypeEdge {
+	node: ContentType
+	cursor: String!
+}
+
+input CredentialInput {
+	username: String!
+	password: String!
+}
+
+scalar DateTime
+
+scalar Decimal
+
+input DeleteMutationInput {
+	id: ID
+	clientMutationId: String
+}
+
+type DeleteMutationPayload {
+	success: Boolean
+	error: String
+	clientMutationId: String
+}
+
+type EmailAddressType implements Node {
+	id: ID!
+	email: String!
+}
+
+type EmailAddressTypeConnection {
+	pageInfo: PageInfo!
+	edges: [EmailAddressTypeEdge]!
+}
+
+type EmailAddressTypeEdge {
+	node: EmailAddressType
+	cursor: String!
+}
+
+input EmailAuthenticationInput {
+	email: String
+	verification: Verification
+	deviceName: String
+	checkExisting: Boolean
+	clientMutationId: String
+}
+
+type EmailAuthenticationPayload {
+	token: String
+	id: String
+	error: String
+	success: Boolean
+	userExists: Boolean
+	clientMutationId: String
+}
+
+scalar JSONString
+
+input LogoutMutationInput {
+	clientMutationId: String
+}
+
+type LogoutMutationPayload {
+	success: Boolean
+	error: String
+	clientMutationId: String
+}
+
+input MobileAuthenticationInput {
+	mobile: MobileNumberInput
+	verification: Verification
+	whatsapp: Boolean
+	deviceName: String
+	checkExisting: Boolean
+	clientMutationId: String
+}
+
+type MobileAuthenticationPayload {
+	token: String
+	id: String
+	error: String
+	success: Boolean
+	userExists: Boolean
+	clientMutationId: String
+}
+
+type MobileNumber implements Node {
+	countryCode: String!
+	id: ID!
+	number: String
+}
+
+input MobileNumberInput {
+	countryCode: String = "+91"
+	number: String!
+}
+
+type Mutation {
+	subscribe(input: SubscriberMutationInput!): SubscriberMutationPayload
+	logout(input: LogoutMutationInput!): LogoutMutationPayload
+	authenticate(input: AuthenticationInput!): AuthenticationPayload
+	mobileAuth(input: MobileAuthenticationInput!): MobileAuthenticationPayload
+	signup(input: SignupInput!): SignupPayload
+	emailAuth(input: EmailAuthenticationInput!): EmailAuthenticationPayload
+	delete(input: DeleteMutationInput!): DeleteMutationPayload
+	blog(input: BlogMutationInput!): BlogMutationPayload
+	section(input: SectionMutationInput!): SectionMutationPayload
+	account(input: BlogAccountMutationInput!): BlogAccountMutationPayload
+}
+
+interface Node {
+	id: ID!
+}
+
+type PageInfo {
+	hasNextPage: Boolean!
+	hasPreviousPage: Boolean!
+	startCursor: String
+	endCursor: String
+}
+
+type Query {
+	myAccounts(
+		offset: Int
+		before: String
+		after: String
+		first: Int
+		last: Int
+	): BlogAccountTypeConnection
+	accounts(
+		offset: Int
+		before: String
+		after: String
+		first: Int
+		last: Int
+	): BlogAccountTypeConnection
+	node(id: ID!): Node
+	blogs(
+		offset: Int
+		before: String
+		after: String
+		first: Int
+		last: Int
+	): BlogTypeConnection
+	myBlogs(
+		offset: Int
+		before: String
+		after: String
+		first: Int
+		last: Int
+	): BlogTypeConnection
+	blog(id: ID!): BlogType
+}
+
+type ReviewType implements Node {
+	id: ID!
+	user: Account
+	rating: Decimal!
+	media(
+		offset: Int
+		before: String
+		after: String
+		first: Int
+		last: Int
+	): ContentTypeConnection!
+	comment: String
+	timestamp: DateTime!
+}
+
+type ReviewTypeConnection {
+	pageInfo: PageInfo!
+	edges: [ReviewTypeEdge]!
+}
+
+type ReviewTypeEdge {
+	node: ReviewType
+	cursor: String!
+}
+
+input SectionMutationInput {
+	id: ID
+	blogId: ID
+	title: String
+	content: String
+	mediaLinks: JSONString
+	clientMutationId: String
+}
+
+type SectionMutationPayload {
+	success: Boolean
+	error: String
+	section: BlogSectionType
+	clientMutationId: String
+}
+
+input SignupInput {
+	username: String
+	password: String
+	clientMutationId: String
+}
+
+type SignupPayload {
+	token: String
+	success: Boolean
+	error: String
+	clientMutationId: String
+}
+
+type SocialAccountType implements Node {
+	id: ID!
+	name: String
+	username: String
+	metaData: JSONString
+	type: SocialAccountsEnum
+}
+
+type SocialAccountTypeConnection {
+	pageInfo: PageInfo!
+	edges: [SocialAccountTypeEdge]!
+}
+
+type SocialAccountTypeEdge {
+	node: SocialAccountType
+	cursor: String!
+}
+
+enum SocialAccountsEnum {
+	INSTAGRAM
+	FACEBOOK
+	TWITTER
+	WHATSAPP
+	LINKEDIN
+	YOUTUBE
+	TIKTOK
+	SNAPCHAT
+	TELEGRAM
+	PINTEREST
+	REDDIT
+	TUMBLR
+	GITHUB
+	MEDIUM
+	DISCORD
+	OTHER
+	SKYPE
+	QUORA
+	TWITCH
+	SPOTIFY
+	SOUNDCLOUD
+	TINDER
+	BADOO
+}
+
+input SocialMediaInput {
+	username: String!
+	url: String
+	type: SocialAccountsEnum! = 15
+}
+
+input SubscriberMutationInput {
+	name: String!
+	email: String
+	mobile: MobileNumberInput
+	node: String!
+	clientMutationId: String
+}
+
+type SubscriberMutationPayload {
+	success: Boolean
+	error: String
+	clientMutationId: String
+}
+
+input Verification {
+	id: String!
+	otp: String!
+}

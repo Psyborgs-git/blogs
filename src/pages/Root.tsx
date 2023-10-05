@@ -56,7 +56,7 @@ function Root() {
     );
     const { isDrawerOpen, toggleDrawer } = React.useContext(DrawerContext);
     const [search, setSearch] = React.useState("");
-    const blogs = data.blogs?.edges?.filter(v => search ? v?.node?.title?.includes(search) : true) ?? [];
+    const blogs = data.blogs?.edges?.filter(v => search ? v?.node?.title?.toLowerCase()?.includes(search) : true) ?? [];
 
     return (
         <>
@@ -82,8 +82,23 @@ function Root() {
                 position='fixed'
                 sx={{ top: 0, zIndex: 999, p: 0 }}
             >
-                <Toolbar sx={{ justifyContent: "space-between", height: "72px" }}>
+                <Toolbar sx={{ justifyContent: "space-between", height: "72px", pl: { md: "72px" } }}>
+
+                    <Typography
+                        variant="h5"
+                        children="Jae's Blogs"
+                        color="text.secondary"
+                        textTransform="capitalize"
+                        sx={{
+                            ml: "10px",
+                            mb: "10px",
+                            fontWeight: "bold",
+                            textAlign: "center",
+                        }}
+                    />
+
                     <ThemeSwitch sx={{ color: "text.primary", ml: "auto" }} />
+
                     <Hamburger
                         onClick={() => toggleDrawer()}
                         open={isDrawerOpen}
@@ -93,6 +108,7 @@ function Root() {
                         <span />
                         <span />
                     </Hamburger>
+
                 </Toolbar>
             </StyledAppbar>
 
@@ -109,18 +125,6 @@ function Root() {
                             height: "max-content",
                         }}
                     >
-                        <Typography
-                            variant="h5"
-                            children="Blogs"
-                            color="text.secondary"
-                            textTransform="uppercase"
-                            sx={{
-                                ml: "10px",
-                                mb: "10px",
-                                fontWeight: "bold",
-                                textAlign: "center",
-                            }}
-                        />
                         <Stack
                             gap={1}
                             children={data.blogs?.edges?.map(
@@ -179,9 +183,7 @@ function Root() {
                                 alignItems: "center",
                             }}
                             children={blogs.length === 0 ?
-                                (
-                                    <Typography variant="body1" children="No blogs to show here" color="text.secondary" />
-                                )
+                                <Typography variant="body1" children="No blogs to show here" color="text.secondary" />
                                 : blogs.map(
                                     (blog, index) => blog?.node ? (
                                         <DrawerButton

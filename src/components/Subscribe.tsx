@@ -9,7 +9,7 @@ interface SubscribeProps {
     node: string;
 };
 
-const T = styled(TextField)(({ theme }) => ({
+export const T = styled(TextField)(({ theme }) => ({
     "& .MuiOutlinedInput-root": {
         borderRadius: "21px",
         borderColor: theme.palette.divider,
@@ -27,7 +27,7 @@ const T = styled(TextField)(({ theme }) => ({
         width: "90%"
     },
     [theme.breakpoints.up("md")]: {
-        width: "50%"
+        width: "70%"
     },
 }))
 
@@ -122,11 +122,6 @@ function Subscribe({ node }: SubscribeProps) {
                     variant="outlined"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    sx={{
-                        width: {
-                            md: "70%"
-                        }
-                    }}
                     InputProps={{
                         endAdornment: <Mail />
                     }}

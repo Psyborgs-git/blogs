@@ -45,7 +45,7 @@ const middlewares = ({ url, apiToken, token }: EnvBuilder): Array<Middleware> =>
         token,
         allowEmptyToken: true,
         header: "AUTHORIZATION",
-        "prefix": ""
+        "prefix": "JWT"
       }),
       retryMiddleware({
         fetchTimeout: 15000,

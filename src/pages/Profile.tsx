@@ -21,26 +21,26 @@ const blink = keyframes`
     }
 `;
 
-interface ProfileProps {
-    readonly id: string;
-    readonly name: string | null;
-    readonly seoTags: ReadonlyArray<string> | null;
-    readonly isActive: boolean;
-    readonly isVerified: boolean;
-    readonly verifiedEmail: string | null;
-    readonly category: string | null;
-    readonly cover: string | null;
-    readonly icon: string | null;
-    readonly avrRating: number | null;
-    readonly numOfReviews: number | null;
-    readonly description: string | null;
-    readonly socials: {
-        readonly edges: ReadonlyArray<{
-            readonly node: {
-                readonly id: string;
-                readonly username: string | null;
-                readonly type: SocialAccountsEnum | null;
-                readonly name: string | null;
+export interface ProfileProps {
+    id: string;
+    name: string | null;
+    seoTags: ReadonlyArray<string> | null;
+    isActive: boolean;
+    isVerified: boolean;
+    verifiedEmail: string | null;
+    category: string | null;
+    cover: string | null;
+    icon: string | null;
+    avrRating: number | null;
+    numOfReviews: number | null;
+    description: string | null;
+    socials: {
+        edges: ReadonlyArray<{
+            node: {
+                id: string;
+                username: string | null;
+                type: SocialAccountsEnum | null;
+                name: string | null;
             } | null;
         } | null>;
     };

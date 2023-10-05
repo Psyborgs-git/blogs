@@ -10,6 +10,8 @@ import { ProfileCard } from './Profile';
 import { ProfileData$data } from './__generated__/ProfileData.graphql';
 import BlogThumbnail from '../components/BlogThumbnail';
 import Subscribe from '../components/Subscribe';
+import { useNavigate } from 'react-router';
+import { Add } from '@mui/icons-material';
 
 const graphql = require("babel-plugin-relay/macro");
 
@@ -21,6 +23,39 @@ interface ModProfileState {
     accounts?: MyProfileQuery$data["accounts"];
     selected?: number;
     newAccountForm?: boolean;
+}
+
+export const AccountAvatar = ({ edge, onClick, isSelected = false }: { edge: any; onClick: () => void; isSelected: boolean }) => {
+    return (
+        <Stack onClick={onClick} direction="column" justifyContent="center" alignItems="center" >
+            <Avatar
+                key={edge?.node?.id}
+                src={edge?.node?.icon ?? undefined}
+                alt={edge?.node?.name}
+                children={
+                    edge?.node?.icon ?
+                        typeof (edge?.node?.icon) === "string" ? undefined : edge?.node?.icon :
+                        edge?.node?.name?.split(" ").map((x: string) => x.charAt(0))
+                }
+                sx={{
+                    width: "48px",
+                    height: "48px",
+                    border: theme => `2px solid ${isSelected ? theme.palette.primary.main : theme.palette.text.secondary}`,
+                    cursor: "pointer",
+                    transition: "0.2s",
+                    "&:hover": {
+                        transform: "scale(0.98)"
+                    }
+                }}
+            />
+            <Typography
+                variant="subtitle2"
+                color="text.secondary"
+                sx={{ textAlign: "center" }}
+                children={edge?.node?.name}
+            />
+        </Stack>
+    )
 }
 
 class ModProfile extends React.Component<ModProfileProps, ModProfileState> {
@@ -41,32 +76,8 @@ class ModProfile extends React.Component<ModProfileProps, ModProfileState> {
             this.setState({ selected: index });
         };
 
-        return (
-            <Stack direction="column" justifyContent="center" alignItems="center" >
-                <Avatar
-                    key={edge?.node?.id}
-                    src={edge?.node?.icon ?? undefined}
-                    children={edge?.node?.icon ? undefined : edge?.node?.name?.split(" ").map((x: string) => x.charAt(0))}
-                    onClick={() => selectAccount(index)}
-                    sx={{
-                        width: "48px",
-                        height: "48px",
-                        border: theme => `2px solid ${isSelected ? theme.palette.primary.main : theme.palette.text.secondary}`,
-                        cursor: "pointer",
-                        transition: "0.2s",
-                        "&:hover": {
-                            transform: "scale(0.98)"
-                        }
-                    }}
-                />
-                <Typography
-                    variant="subtitle2"
-                    color="text.secondary"
-                    sx={{ textAlign: "center" }}
-                    children={edge?.node?.name}
-                />
-            </Stack>
-        )
+        return AccountAvatar({ edge, onClick: () => selectAccount(index), isSelected })
+
     }
 
     _render_blog_thumbnail = (edge: any, index: number) => (
@@ -113,6 +124,7 @@ class ModProfile extends React.Component<ModProfileProps, ModProfileState> {
             { fetchPolicy: "store-or-network" }
         );
         const { accounts } = this.state;
+        const nav = useNavigate();
 
         React.useEffect(() => {
             this.setState({ accounts: data?.accounts });
@@ -121,7 +133,7 @@ class ModProfile extends React.Component<ModProfileProps, ModProfileState> {
             } else if (this.state.selected === undefined && accounts?.edges?.length) {
                 this.setState({ selected: 0 });
             }
-        }, [data]);
+        }, [data, accounts?.edges?.length]);
 
         return (
             <AppBar
@@ -155,6 +167,11 @@ class ModProfile extends React.Component<ModProfileProps, ModProfileState> {
                         }} >
                         <Stack py={2} direction="row" gap={3} justifyContent="space-evenly">
                             {accounts?.edges?.map(this._render_header_account)}
+                            {AccountAvatar({
+                                edge: { node: { id: "new", name: "new account", icon: <Add /> } },
+                                onClick: () => nav("/profile/new"),
+                                isSelected: false
+                            })}
                         </Stack>
                     </Box>
                 </Toolbar>
@@ -185,7 +202,9 @@ class ModProfile extends React.Component<ModProfileProps, ModProfileState> {
                         }}
                     >
                         <ProfileCard
-                            account={this.state.accounts?.edges?.[this.state.selected]?.node as unknown as ProfileData$data}
+                            account={
+                                this.state.accounts?.edges?.[this.state.selected]?.node as unknown as ProfileData$data
+                            }
                         />
                         <Stack direction="column" justifyContent="space-evenly" alignItems="center" gap={2} sx={{ flex: 1 }} >
                             <Typography variant="h5" children="Blogs" alignSelf="center" />
@@ -242,20 +261,22 @@ class ModProfile extends React.Component<ModProfileProps, ModProfileState> {
         const { DataFetchLayer, Account } = this
 
         return (
-            <Container
-                sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    width: "100%",
-                    height: "100vh",
-                    bgcolor: "background.default",
-                    overflowY: "scroll",
-                    flex: 1,
-                }}
-            >
+            <>
                 <DataFetchLayer />
-                <Account />
-            </Container>
+                <Container
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        width: "100%",
+                        height: "100vh",
+                        bgcolor: "background.default",
+                        overflowY: "scroll",
+                        flex: 1,
+                    }}
+                >
+                    <Account />
+                </Container>
+            </>
         );
     }
 

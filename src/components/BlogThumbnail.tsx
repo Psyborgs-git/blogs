@@ -54,7 +54,7 @@ function BlogThumbnail({ fragRef, sx }: BlogThumbnailProps) {
             ]}
             onClick={() => naviagte(`/blog/${data?.id}`)}
         >
-            <Stack gap={1} direction='row' p={0.5} >
+            <Stack gap={1} maxWidth="100%" direction='row' p={0.5} height="54px" >
                 {data?.icon && <Avatar src={data?.icon} alt={data?.title} />}
                 <Typography variant="h5" children={data?.title} color="text.primary" sx={{
                     overflow: "hidden",
@@ -62,7 +62,11 @@ function BlogThumbnail({ fragRef, sx }: BlogThumbnailProps) {
                     display: "-webkit-box",
                     WebkitBoxOrient: "vertical",
                     WebkitLineClamp: 1, // Change this value to adjust the number of lines displayed
-                    textAlign: "left"
+                    lineClamp: 1,
+                    fontWeight: 700,
+                    maxLines: 1,
+                    maxHeight: "45px",
+                    alignSelf: "center",
                 }} />
             </Stack>
 

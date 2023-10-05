@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<4be50e8cb994e4521548b8975e16a2b0>>
+ * @generated SignedSource<<0f42bffc649e0534db849935706ae8ed>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -212,7 +212,14 @@ return {
                     "name": "cover",
                     "storageKey": null
                   },
-                  (v1/*: any*/)
+                  (v1/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "category",
+                    "storageKey": null
+                  }
                 ],
                 "storageKey": null
               }
@@ -225,12 +232,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "067d80e77e4f99ac74183c66b697f218",
+    "cacheID": "391bf5d08f16490c44712dad29c81b21",
     "id": null,
     "metadata": {},
     "name": "RootQuery",
     "operationKind": "query",
-    "text": "query RootQuery {\n  accounts {\n    edges {\n      node {\n        id\n        name\n        icon\n        isActive\n      }\n    }\n  }\n  blogs {\n    edges {\n      node {\n        id\n        title\n        ...BlogThumbnail_data\n        ...DrawerButton_data\n      }\n    }\n  }\n}\n\nfragment BlogThumbnail_data on BlogType {\n  id\n  title\n  description\n  cover\n  icon\n}\n\nfragment DrawerButton_data on BlogType {\n  id\n  title\n  icon\n}\n"
+    "text": "query RootQuery {\n  accounts {\n    edges {\n      node {\n        id\n        name\n        icon\n        isActive\n      }\n    }\n  }\n  blogs {\n    edges {\n      node {\n        id\n        title\n        ...BlogThumbnail_data\n        ...DrawerButton_data\n      }\n    }\n  }\n}\n\nfragment BlogThumbnail_data on BlogType {\n  id\n  title\n  description\n  cover\n  icon\n}\n\nfragment DrawerButton_data on BlogType {\n  id\n  title\n  category\n  icon\n}\n"
   }
 };
 })();

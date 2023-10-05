@@ -29,6 +29,9 @@ import Blog from './pages/Blog';
 // root app layout
 import Layout from './Layout';
 import NewRootLoader from './loader/Root';
+import Login from './pages/Login';
+import CreateAccount from './pages/CreateAccount';
+import CreateBlog from './pages/CreateBlog';
 
 
 const LoadingScreen = () => {
@@ -75,7 +78,16 @@ const router = createBrowserRouter([
                                 <MyProfile />
                             </React.Suspense>
                         ),
-                    }
+                    },
+                    {
+                        id: "CreateProfile",
+                        path: "/profile/new",
+                        element: (
+                            <React.Suspense fallback={<LoadingScreen />} >
+                                <CreateAccount />
+                            </React.Suspense>
+                        ),
+                    },
                 ]
             },
             // explore blogs & view blog page
@@ -90,19 +102,46 @@ const router = createBrowserRouter([
                                 <Blog />
                             </React.Suspense>
                         )
-                    }
+                    },
+                    {
+                        id: "EditBlog",
+                        path: "/blog/:id/edit",
+                        element: (
+                            <React.Suspense fallback={<LoadingScreen />} >
+                                <CreateBlog />
+                            </React.Suspense>
+                        ),
+                    },
                 ]
-            }
+            },
+            {
+                id: "CreateBlog",
+                path: "/blog/new",
+                element: (
+                    <React.Suspense fallback={<LoadingScreen />} >
+                        <CreateBlog />
+                    </React.Suspense>
+                ),
+            },
         ]
     },
+    {
+        path: "/login",
+        element: <Login />,
+    },
+    {
+        path: "*",
+        element: <RootErrorPage />
+    }
 ]);
-
+// 
 const inDevEnv = process.env.NODE_ENV === "development";
+// const inDevEnv = process.env.NODE_ENV === "production";
 
-function BlogsApp() {
+export default function App() {
 
     const env = prodEnv({
-        url: (inDevEnv ? "http://j.local:8000" : "https://api.beyondigital.agency") + "/blogs/graphql/",
+        url: (inDevEnv ? "http://j.local:8000" : "https://api.jaesmetaverse.com") + "/blogs/graphql/",
         "apiToken": inDevEnv ? "JAE_TEST_KEY" : "3df844de6b02d29ea2b9c3b83b924459488b93c0679aae8791a3ce4bbe9e3c41",
         token: window.localStorage.getItem("token") ?? ""
     });
@@ -116,5 +155,3 @@ function BlogsApp() {
     );
 
 };
-
-export default BlogsApp;
