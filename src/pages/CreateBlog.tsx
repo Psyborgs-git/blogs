@@ -69,6 +69,8 @@ class CreateBlog extends React.Component<CreateBlogProps, CreateBlogState> {
 
     RenderBlogAccounts = () => {
         const data = useLazyLoadQuery<CreateBlogQuery>(graphql`query CreateBlogQuery {myAccounts { edges{node{ id name icon}}}}`, {}, { fetchPolicy: "store-or-network" });
+        const options = [...(data?.myAccounts?.edges?.map((edge: any) => edge) ?? []), { node: { id: "+", name: "Create New" } }]
+        const nav = useNavigate();
 
         return (
             <Stack
@@ -90,14 +92,18 @@ class CreateBlog extends React.Component<CreateBlogProps, CreateBlogState> {
                 <Typography variant="h5" sx={{ textAlign: "center", my: 2 }} children={this.state.input.title ?? "New Blog"} />
 
                 <Autocomplete
-                    options={data?.myAccounts?.edges?.map((edge: any) => edge) ?? []}
+                    options={options}
+                    onEmptied={() => this.setState({ selectedBlogAccount: { id: "", name: "" } })}
                     getOptionLabel={(option) => option}
                     renderOption={(props, option) =>
                         <AccountAvatar
                             key={option.node?.id}
                             edge={option}
                             isSelected={this.state.selectedBlogAccount?.id === option.node?.id}
-                            onClick={() => this.setState({ selectedBlogAccount: { ...option.node } })}
+                            onClick={() =>
+                                // @ts-ignore
+                                option.node?.id === "+" ? nav("/profile/create") : this.setState({ selectedBlogAccount: { ...option.node } })
+                            }
                         />
                     }
                     value={this.state.selectedBlogAccount?.name}
